@@ -372,7 +372,25 @@ export default function ChatWindow({ chatId, currentUser }: ChatWindowProps) {
                   {message.senderId !== currentUser.id && chatDetails?.is_group && (
                     <p className="text-xs font-medium text-[#128C7E] mb-1">{message.senderName}</p>
                   )}
-                  <p>{message.content}</p>
+                  {message.isDrawing ? (
+                    <div className="drawing-preview">
+                      {message.drawingData ? (
+                        <img
+                          src={message.drawingData.dataURL || "/placeholder.svg"}
+                          alt="Drawing"
+                          className="max-w-full rounded-md border border-gray-200"
+                          style={{
+                            width: Math.min(300, message.drawingData.width) + "px",
+                            height: "auto",
+                          }}
+                        />
+                      ) : (
+                        <div className="text-gray-500 italic">Drawing unavailable</div>
+                      )}
+                    </div>
+                  ) : (
+                    <p>{message.content}</p>
+                  )}
                   <div className="flex justify-end items-center gap-1 mt-1">
                     <p className="text-right text-xs text-gray-500">{formatTime(message.createdAt)}</p>
                     {message.pending && <span className="text-xs text-gray-400">Sending...</span>}
